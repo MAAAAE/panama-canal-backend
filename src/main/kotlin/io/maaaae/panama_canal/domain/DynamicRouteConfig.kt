@@ -1,11 +1,9 @@
 package io.maaaae.panama_canal.domain
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.*
 
 @Entity
+@Table(name = "dynamic_route_config")
 data class DynamicRouteConfig(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,

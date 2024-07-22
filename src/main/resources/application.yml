@@ -2,8 +2,7 @@ spring:
   application:
     name: panama-canal
   datasource:
-    url: jdbc:sqlite:memory:myDb?cache=shared
-    #    url: jdbc:sqlite:./data/mydatabase.db
+    url: jdbc:sqlite:./data/panama.db?cache=shared
     driverClassName: org.sqlite.JDBC
   jpa:
     hibernate:

@@ -3,6 +3,7 @@ package io.maaaae.panama_canal.domain
 import jakarta.persistence.*
 
 @Entity
+@Table(name = "api_info")
 data class ApiInfo(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val apiId: Long = 0,

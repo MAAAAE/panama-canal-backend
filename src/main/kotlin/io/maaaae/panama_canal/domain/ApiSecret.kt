@@ -4,6 +4,7 @@ import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
+@Table(name = "api_secret")
 data class ApiSecret(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val secretId: Long = 0,
