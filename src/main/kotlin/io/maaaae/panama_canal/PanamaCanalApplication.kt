@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class PanamaCanalApplication
 
 fun main(args: Array<String>) {
-	runApplication<PanamaCanalApplication>(*args)
+    runApplication<PanamaCanalApplication>(*args)
 }

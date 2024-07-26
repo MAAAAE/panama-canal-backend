@@ -1,6 +1,15 @@
 package io.maaaae.panama_canal.domain
 
-import jakarta.persistence.*
+import io.maaaae.panama_canal.common.constant.Method
+import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
+import jakarta.persistence.Table
 
 @Entity
 @Table(name = "api_info")
@@ -9,7 +18,8 @@ data class ApiInfo(
     val apiId: Long = 0,
     val name: String,
     val endpoint: String,
-    val method: String,
+    @Enumerated(EnumType.STRING)
+    val method: Method,
     @ManyToOne @JoinColumn(name = "category_id")
     val category: Category
 )
