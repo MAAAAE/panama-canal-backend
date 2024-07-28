@@ -1,6 +1,7 @@
 package io.maaaae.panama_canal.domain
 
 import io.maaaae.panama_canal.dto.category.CategoryRequest
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -12,6 +13,7 @@ import jakarta.persistence.Table
 data class Category(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val categoryId: Long = 0,
+    @Column(unique = true)
     var name: String,
     var description: String?,
     var domain: String,
