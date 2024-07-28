@@ -12,15 +12,11 @@ import org.springframework.web.bind.support.WebExchangeBindException
 @RestControllerAdvice
 class GlobalExceptionHandler {
 
-    @ExceptionHandler(WebExchangeBindException::class)
-    fun handleValidationExceptions(ex: WebExchangeBindException): ResponseEntity<Map<String, String?>> {
-        val errors = mutableMapOf<String, String?>()
-        ex.bindingResult.allErrors.forEach { error ->
-            val fieldName = (error as FieldError).field
-            val errorMessage = error.getDefaultMessage()
-            errors[fieldName] = errorMessage
-        }
-        return ResponseEntity(errors, HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    fun handleValidationExceptions(ex: MethodArgumentNotValidException): ResponseEntity<Map<String, String?>> {
+        val errorMessage = ex.bindingResult.allErrors.firstOrNull()?.defaultMessage ?: "Invalid request"
+        val errorResponse = mapOf("errorCode" to HttpStatus.BAD_REQUEST.value().toString(), "errorMessage" to errorMessage)
+        return ResponseEntity(errorResponse, HttpStatus.BAD_REQUEST)
     }
 
     @ExceptionHandler(ResourceNotFoundException::class)

@@ -9,17 +9,22 @@ import io.maaaae.panama_canal.common.exception.ResourceNotFoundException
 import io.maaaae.panama_canal.domain.api_info.ApiInfo
 import io.maaaae.panama_canal.domain.Category
 import io.maaaae.panama_canal.repository.api_info.ApiInfoRepository
+import io.maaaae.panama_canal.repository.category.CategoryRepository
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 
 class SpecsServiceImpleTest : BehaviorSpec({
     val apiInfoRepository = mockk<ApiInfoRepository>()
-    val specsServiceImpl = SpecsServiceImpl(apiInfoRepository)
+    val categoryRepository = mockk<CategoryRepository>()
+    val specsServiceImpl = SpecsServiceImpl(
+        apiInfoRepository = apiInfoRepository,
+        categoryRepository = categoryRepository
+    )
 
-    given("ApiInfoService") {
+    given("SpecService") {
         `when`("resources are found") {
-            then("it should return a list of ApiInfoDto") {
+            then("it should return a list of SpecDto") {
                 // Given
                 val category = Category(1, "Category1", "Description1")
                 val apiInfoList = listOf(
@@ -29,7 +34,7 @@ class SpecsServiceImpleTest : BehaviorSpec({
                 every { apiInfoRepository.findAll() } returns apiInfoList
 
                 // When
-                val result = specsServiceImpl.getAllApiInfo()
+                val result = specsServiceImpl.getAllApiSpecs()
 
                 // Then
                 result.shouldNotBeEmpty()
@@ -47,7 +52,7 @@ class SpecsServiceImpleTest : BehaviorSpec({
                 // Then
                 shouldThrow<ResourceNotFoundException> {
                     // When
-                    specsServiceImpl.getAllApiInfo()
+                    specsServiceImpl.getAllApiSpecs()
                 }
                 verify { apiInfoRepository.findAll() }
             }
