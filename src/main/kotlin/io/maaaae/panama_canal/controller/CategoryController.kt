@@ -24,13 +24,13 @@ class CategoryController(private val categoryService: CategoryService) {
     }
 
     @PutMapping("/{id}")
-    fun updateCategory(@PathVariable id: String, @RequestBody categoryRequest: CategoryRequest): ResponseEntity<Void> {
+    fun updateCategory(@PathVariable id: Long, @RequestBody categoryRequest: CategoryRequest): ResponseEntity<Void> {
         categoryService.updateCategory(id, categoryRequest)
         return ResponseEntity(HttpStatus.OK)
     }
 
     @DeleteMapping("/{id}")
-    fun deleteCategory(@PathVariable id: String): ResponseEntity<Void> {
+    fun deleteCategory(@PathVariable id: Long): ResponseEntity<Void> {
         categoryService.deleteCategory(id)
         return ResponseEntity(HttpStatus.OK)
     }
