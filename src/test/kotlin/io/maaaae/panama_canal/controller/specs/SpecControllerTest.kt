@@ -7,6 +7,7 @@ import io.maaaae.panama_canal.common.exception.ResourceNotFoundException
 import io.maaaae.panama_canal.controller.advice.GlobalExceptionHandler
 import io.maaaae.panama_canal.dto.specs.SpecsDto
 import io.maaaae.panama_canal.dto.specs.SpecsRequest
+import io.maaaae.panama_canal.dto.specs.SpecsUpdateRequest
 import io.maaaae.panama_canal.service.SpecsService
 import io.mockk.clearAllMocks
 import io.mockk.every
@@ -37,6 +38,7 @@ class SpecControllerTest : DescribeSpec({
     val specsDto = SpecsDto(
         endpoint = "/test",
         method = Method.GET,
+        headers = "Content-Type: application/json",
         categoryId = 1L
     )
     val specsRequest = SpecsRequest(
@@ -45,7 +47,7 @@ class SpecControllerTest : DescribeSpec({
         method = Method.GET,
         categoryId = 1L,
         customRoute = "/custom",
-        headers = "Header: value"
+        headers = "Content-Type: application/json"
     )
 
     describe("SpecController") {
@@ -119,7 +121,64 @@ class SpecControllerTest : DescribeSpec({
             }
         }
 
-        context("DELETE /specs") {
+        context("PUT /specs/{id}") {
+            it("should update the API spec and return the updated spec") {
+                val specId = 1L
+                val specsUpdateRequest = SpecsUpdateRequest(
+                    endpoint = "/new-endpoint",
+                    method = Method.POST,
+                    headers = "new-header: value"
+                )
+                val updatedSpecDto = SpecsDto(
+                    endpoint = "/new-endpoint",
+                    method = Method.POST,
+                    categoryId = 1L,
+                    headers = "new-header: value"
+                )
+
+                every { specsService.updateApiSpec(specId = specId, specsUpdateRequest = specsUpdateRequest) } returns updatedSpecDto
+
+                mockMvc.perform(
+                    MockMvcRequestBuilders.put("/specs/$specId")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(specsUpdateRequest))
+                )
+                    .andExpect(MockMvcResultMatchers.status().isOk)
+                    .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.endpoint").value(updatedSpecDto.endpoint))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.method").value(updatedSpecDto.method.toString()))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.headers").value(updatedSpecDto.headers))
+
+                verify(exactly = 1) { specsService.updateApiSpec(specId, specsUpdateRequest) }
+            }
+
+            it("should return not found status if the API spec does not exist") {
+                val specId = 1L
+                val specsUpdateRequest =
+                    SpecsUpdateRequest(endpoint = "/new-endpoint", method = Method.POST, headers = "new-header: value")
+
+                every {
+                    specsService.updateApiSpec(
+                        specId = specId,
+                        specsUpdateRequest = specsUpdateRequest
+                    )
+                } throws ResourceNotFoundException("API spec not found")
+
+                mockMvc.perform(
+                    MockMvcRequestBuilders.put("/specs/$specId")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(specsUpdateRequest))
+                )
+                    .andExpect(MockMvcResultMatchers.status().isNotFound)
+                    .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.errorCode").value(HttpStatus.NOT_FOUND.value()))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage").value("API spec not found"))
+
+                verify { specsService.updateApiSpec(any(), any()) }
+            }
+        }
+
+        context("DELETE /specs/{id}") {
             it("should remove api specs") {
                 val id = 1L
                 every { specsService.deleteApiSpec(id) } returns Unit
@@ -136,8 +195,8 @@ class SpecControllerTest : DescribeSpec({
                 every { specsService.deleteApiSpec(id) } throws ResourceNotFoundException(errorMessage)
 
                 mockMvc.perform(MockMvcRequestBuilders.delete("/specs/$id"))
-                    .andExpect(MockMvcResultMatchers.status().isNotFound)
-                    .andExpect(MockMvcResultMatchers.content().string(errorMessage))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.errorCode").value(HttpStatus.NOT_FOUND.value()))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage").value(errorMessage))
             }
         }
     }

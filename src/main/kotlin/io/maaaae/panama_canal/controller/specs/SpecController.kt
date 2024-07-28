@@ -2,6 +2,7 @@ package io.maaaae.panama_canal.controller.specs
 
 import io.maaaae.panama_canal.dto.specs.SpecsDto
 import io.maaaae.panama_canal.dto.specs.SpecsRequest
+import io.maaaae.panama_canal.dto.specs.SpecsUpdateRequest
 import io.maaaae.panama_canal.service.SpecsService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
@@ -33,8 +34,12 @@ class SpecController(private val specsService: SpecsService) {
     }
 
     @PutMapping("/{id}")
-    fun editApiSpec(@PathVariable id: Long): ResponseEntity<Void> {
-        TODO("NOT IMPLEMENTED YET")
+    fun editApiSpec(
+        @PathVariable id: Long,
+        @RequestBody @Valid specsUpdateRequest: SpecsUpdateRequest
+    ): ResponseEntity<SpecsDto> {
+        val updatedSpec = specsService.updateApiSpec(specId = id, specsUpdateRequest = specsUpdateRequest)
+        return ResponseEntity.ok(updatedSpec)
     }
 
     @DeleteMapping("/{id}")
