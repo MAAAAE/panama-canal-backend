@@ -6,16 +6,16 @@ import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.shouldBe
 import io.maaaae.panama_canal.common.constant.Method
 import io.maaaae.panama_canal.common.exception.ResourceNotFoundException
-import io.maaaae.panama_canal.domain.ApiInfo
+import io.maaaae.panama_canal.domain.api_info.ApiInfo
 import io.maaaae.panama_canal.domain.Category
-import io.maaaae.panama_canal.repository.ApiInfoRepository
+import io.maaaae.panama_canal.repository.api_info.ApiInfoRepository
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 
-class ApiInfoServiceImplTest : BehaviorSpec({
+class SpecsServiceImpleTest : BehaviorSpec({
     val apiInfoRepository = mockk<ApiInfoRepository>()
-    val apiInfoService = ApiInfoServiceImpl(apiInfoRepository)
+    val specsServiceImpl = SpecsServiceImpl(apiInfoRepository)
 
     given("ApiInfoService") {
         `when`("resources are found") {
@@ -29,7 +29,7 @@ class ApiInfoServiceImplTest : BehaviorSpec({
                 every { apiInfoRepository.findAll() } returns apiInfoList
 
                 // When
-                val result = apiInfoService.getAllApiInfo()
+                val result = specsServiceImpl.getAllApiInfo()
 
                 // Then
                 result.shouldNotBeEmpty()
@@ -47,7 +47,7 @@ class ApiInfoServiceImplTest : BehaviorSpec({
                 // Then
                 shouldThrow<ResourceNotFoundException> {
                     // When
-                    apiInfoService.getAllApiInfo()
+                    specsServiceImpl.getAllApiInfo()
                 }
                 verify { apiInfoRepository.findAll() }
             }

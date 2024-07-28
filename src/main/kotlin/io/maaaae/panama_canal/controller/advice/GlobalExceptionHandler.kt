@@ -7,12 +7,13 @@ import org.springframework.validation.FieldError
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.bind.support.WebExchangeBindException
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
 
-    @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleValidationExceptions(ex: MethodArgumentNotValidException): ResponseEntity<Map<String, String?>> {
+    @ExceptionHandler(WebExchangeBindException::class)
+    fun handleValidationExceptions(ex: WebExchangeBindException): ResponseEntity<Map<String, String?>> {
         val errors = mutableMapOf<String, String?>()
         ex.bindingResult.allErrors.forEach { error ->
             val fieldName = (error as FieldError).field

@@ -1,6 +1,7 @@
-package io.maaaae.panama_canal.domain
+package io.maaaae.panama_canal.domain.api_info
 
 import io.maaaae.panama_canal.common.constant.Method
+import io.maaaae.panama_canal.domain.Category
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
