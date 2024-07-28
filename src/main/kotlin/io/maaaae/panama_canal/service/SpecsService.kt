@@ -6,4 +6,5 @@ import io.maaaae.panama_canal.dto.specs.SpecsRequest
 interface SpecsService {
     fun getAllApiSpecs(): List<SpecsDto>
     fun createApiSpecs(specsRequest: SpecsRequest): SpecsDto
+    fun deleteApiSpec(specId: Long)
 }

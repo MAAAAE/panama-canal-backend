@@ -3,6 +3,7 @@ package io.maaaae.panama_canal.controller.specs
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.kotest.core.spec.style.DescribeSpec
 import io.maaaae.panama_canal.common.constant.Method
+import io.maaaae.panama_canal.common.exception.ResourceNotFoundException
 import io.maaaae.panama_canal.controller.advice.GlobalExceptionHandler
 import io.maaaae.panama_canal.dto.specs.SpecsDto
 import io.maaaae.panama_canal.dto.specs.SpecsRequest
@@ -10,6 +11,7 @@ import io.maaaae.panama_canal.service.SpecsService
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -114,6 +116,28 @@ class SpecControllerTest : DescribeSpec({
                         .andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage").value(expectedErrorMessage))
 
                 }
+            }
+        }
+
+        context("DELETE /specs") {
+            it("should remove api specs") {
+                val id = 1L
+                every { specsService.deleteApiSpec(id) } returns Unit
+
+                mockMvc.perform(MockMvcRequestBuilders.delete("/specs/$id"))
+                    .andExpect(MockMvcResultMatchers.status().isNoContent)
+
+                verify(exactly = 1) { specsService.deleteApiSpec(id) }
+            }
+
+            it("should return bad request status if the API sepc does not exist") {
+                val id = 1L
+                val errorMessage = "API Spec Not Found. specId: $id"
+                every { specsService.deleteApiSpec(id) } throws ResourceNotFoundException(errorMessage)
+
+                mockMvc.perform(MockMvcRequestBuilders.delete("/specs/$id"))
+                    .andExpect(MockMvcResultMatchers.status().isNotFound)
+                    .andExpect(MockMvcResultMatchers.content().string(errorMessage))
             }
         }
     }

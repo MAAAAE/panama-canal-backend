@@ -28,4 +28,10 @@ class SpecsServiceImpl(
         val createdApiInfo = apiInfoRepository.save(specsRequest.toApiInfoEntity(category))
         return createdApiInfo.toSpecDto()
     }
+
+    override fun deleteApiSpec(specId: Long) {
+        val targetSpec = apiInfoRepository.findByIdOrNull(specId)
+            ?: throw ResourceNotFoundException("API Spec Not Found. specId: $specId")
+        apiInfoRepository.delete(targetSpec)
+    }
 }
