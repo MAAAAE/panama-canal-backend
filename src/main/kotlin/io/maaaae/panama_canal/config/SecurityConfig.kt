@@ -19,11 +19,13 @@ class SecurityConfig {
                 exchanges
                     .pathMatchers("/actuator/**").permitAll()  // Actuator 엔드포인트는 공개
                     .pathMatchers("/api/**").permitAll() // Debug
-                    .anyExchange().authenticated()  // 그 외 모든 요청은 인증 필요
+                    .anyExchange().permitAll()
             }
             .oauth2ResourceServer {
+
                 it.jwt(Customizer.withDefaults())
             }  // JWT를 통한 OAuth2 리소스 서버 설정
+
         return http.build()
     }
 
