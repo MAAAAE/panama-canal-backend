@@ -13,12 +13,12 @@ data class Category(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val categoryId: Long = 0,
     var name: String,
-    var description: String,
+    var description: String?,
     var domain: String,
 ) {
     fun update(categoryRequest: CategoryRequest) {
-        name = categoryRequest.name
-        description = categoryRequest.description
-        domain = categoryRequest.domain
+        categoryRequest.name?.let { name = it }
+        categoryRequest.description?.let { description = it }
+        categoryRequest.domain?.let { domain = it }
     }
 }

@@ -5,5 +5,5 @@ data class CategoryResponse(
     val name: String,
     val secret: String,
     val domain: String,
-    val description: String,
+    val description: String?,
 )
