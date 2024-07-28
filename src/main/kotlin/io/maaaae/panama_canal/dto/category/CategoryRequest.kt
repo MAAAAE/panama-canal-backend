@@ -4,4 +4,5 @@ data class CategoryRequest(
     val name: String,
     val domain: String,
     val secret: String,
+    val description: String,
 )
