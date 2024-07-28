@@ -18,7 +18,7 @@ class CategoryController(private val categoryService: CategoryService) {
     }
 
     @PostMapping
-    fun createCategory(categoryRequest: CategoryRequest): ResponseEntity<Void> {
+    fun createCategory(@RequestBody categoryRequest: CategoryRequest): ResponseEntity<Void> {
         categoryService.createCategory(categoryRequest)
         return ResponseEntity(HttpStatus.CREATED)
     }
