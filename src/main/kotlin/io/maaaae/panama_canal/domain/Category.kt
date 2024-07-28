@@ -12,5 +12,6 @@ data class Category(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val categoryId: Long = 0,
     val name: String,
-    val description: String
+    val description: String,
+    val domain: String,
 )
