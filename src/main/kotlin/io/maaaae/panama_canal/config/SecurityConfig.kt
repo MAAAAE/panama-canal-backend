@@ -12,28 +12,21 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 
 
 @Configuration
-//@EnableWebFluxSecurity
 @EnableWebSecurity
 class SecurityConfig {
-
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
-            .authorizeHttpRequests { exchanges ->
-                exchanges
-                    .requestMatchers("/actuator/**").permitAll()  // Actuator 엔드포인트는 공개
-                    .requestMatchers("/specs/**").permitAll() // Debug
-                    .anyRequest().permitAll()  // 그 외 모든 요청은 인증 필요
-            }
-            .oauth2ResourceServer {
-                it.jwt(Customizer.withDefaults())
-            }  // JWT를 통한 OAuth2 리소스 서버 설정
+          .authorizeHttpRequests { exchanges ->
+              exchanges
+                  .requestMatchers("/actuator/**").permitAll()  // Actuator 엔드포인트는 공개
+                  .requestMatchers("/specs/**").permitAll() // Debug
+                  .anyRequest().permitAll()  // 그 외 모든 요청은 인증 필요
+          }
+          .oauth2ResourceServer {
+              it.jwt(Customizer.withDefaults())
+          }  // JWT를 통한 OAuth2 리소스 서버 설정
 
         return http.build()
     }
-
-//    @Bean
-//    fun jwtDecoder(): ReactiveJwtDecoder {
-//        return ReactiveJwtDecoders.fromIssuerLocation("http://localhost:18080/realms/myrealm")
-//    }
 }
