@@ -2,6 +2,7 @@ package io.maaaae.panama_canal.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.web.SecurityFilterChain
@@ -20,9 +21,7 @@ class SecurityConfig {
                     .anyRequest().authenticated()  // All other requests require authentication
             }
             .oauth2ResourceServer { oauth2ResourceServer ->
-                oauth2ResourceServer.jwt { jwtConfigurer ->
-                    jwtConfigurer.jwkSetUri("http://localhost:18080/realms/myrealm/protocol/openid-connect/certs")
-                }
+                oauth2ResourceServer.jwt(Customizer.withDefaults())
             }  // Configure JWT for OAuth2 resource server
         return http.build()
     }
