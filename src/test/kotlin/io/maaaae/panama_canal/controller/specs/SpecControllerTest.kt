@@ -122,19 +122,19 @@ class SpecControllerTest : DescribeSpec({
         }
 
         context("PUT /specs/{id}") {
+            val specId = 1L
+            val specsUpdateRequest = SpecsUpdateRequest(
+                endpoint = "/new-endpoint",
+                method = Method.POST,
+                headers = "new-header: value"
+            )
+            val updatedSpecDto = SpecsDto(
+                endpoint = "/new-endpoint",
+                method = Method.POST,
+                categoryId = 1L,
+                headers = "new-header: value"
+            )
             it("should update the API spec and return the updated spec") {
-                val specId = 1L
-                val specsUpdateRequest = SpecsUpdateRequest(
-                    endpoint = "/new-endpoint",
-                    method = Method.POST,
-                    headers = "new-header: value"
-                )
-                val updatedSpecDto = SpecsDto(
-                    endpoint = "/new-endpoint",
-                    method = Method.POST,
-                    categoryId = 1L,
-                    headers = "new-header: value"
-                )
 
                 every { specsService.updateApiSpec(specId = specId, specsUpdateRequest = specsUpdateRequest) } returns updatedSpecDto
 
@@ -153,10 +153,6 @@ class SpecControllerTest : DescribeSpec({
             }
 
             it("should return not found status if the API spec does not exist") {
-                val specId = 1L
-                val specsUpdateRequest =
-                    SpecsUpdateRequest(endpoint = "/new-endpoint", method = Method.POST, headers = "new-header: value")
-
                 every {
                     specsService.updateApiSpec(
                         specId = specId,
