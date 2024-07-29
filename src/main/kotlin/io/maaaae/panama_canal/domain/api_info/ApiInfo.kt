@@ -1,6 +1,8 @@
-package io.maaaae.panama_canal.domain
+package io.maaaae.panama_canal.domain.api_info
 
 import io.maaaae.panama_canal.common.constant.Method
+import io.maaaae.panama_canal.domain.Category
+import io.maaaae.panama_canal.dto.specs.SpecsUpdateRequest
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
@@ -15,11 +17,18 @@ import jakarta.persistence.Table
 @Table(name = "api_info")
 data class ApiInfo(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val apiId: Long = 0,
-    val name: String,
-    val endpoint: String,
+    var apiId: Long = 0,
+    var name: String,
+    var endpoint: String,
     @Enumerated(EnumType.STRING)
-    val method: Method,
+    var method: Method,
+    var headers: String,
     @ManyToOne @JoinColumn(name = "category_id")
-    val category: Category
-)
+    var category: Category
+) {
+    fun update(specsUpdateRequest: SpecsUpdateRequest) {
+        specsUpdateRequest.endpoint?.let { this.endpoint = it }
+        specsUpdateRequest.headers?.let { this.headers = it }
+        specsUpdateRequest.method?.let { this.method = it }
+    }
+}

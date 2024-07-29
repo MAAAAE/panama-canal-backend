@@ -1,5 +1,6 @@
 package io.maaaae.panama_canal.domain
 
+import io.maaaae.panama_canal.domain.api_info.ApiInfo
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType

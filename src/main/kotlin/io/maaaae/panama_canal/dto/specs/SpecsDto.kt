@@ -1,9 +1,10 @@
-package io.maaaae.panama_canal.dto
+package io.maaaae.panama_canal.dto.specs
 
 import io.maaaae.panama_canal.common.constant.Method
 
-data class ApiInfoDto(
+data class SpecsDto(
     val endpoint: String,
     val method: Method,
     val categoryId: Long,
+    val headers: String,
 )
