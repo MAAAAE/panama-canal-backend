@@ -16,13 +16,13 @@ class SecurityConfig {
         http
             .authorizeHttpRequests { exchanges ->
                 exchanges
-                    .requestMatchers("/actuator/**").permitAll()  // Actuator 엔드포인트는 공개
+                    .requestMatchers("/actuator/**").permitAll()
                     .requestMatchers("/specs/**").permitAll() // Debug
-                    .anyRequest().permitAll()  // 그 외 모든 요청은 인증 필요
+                    .anyRequest().permitAll()
             }
             .oauth2ResourceServer {
                 it.jwt(Customizer.withDefaults())
-            }  // JWT를 통한 OAuth2 리소스 서버 설정
+            }
 
         return http.build()
     }
