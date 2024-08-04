@@ -33,7 +33,7 @@ dependencies {
 	implementation("org.hibernate.orm:hibernate-community-dialects")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	implementation("io.netty:netty-resolver-dns-native-macos")
-	implementation("org.xerial:sqlite-jdbc:3.41.2.2") // SQLite JDBC 드라이버 추가
+	implementation("org.xerial:sqlite-jdbc:3.41.2.2")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
 
 
