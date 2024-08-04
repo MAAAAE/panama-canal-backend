@@ -90,8 +90,21 @@ class SpecsServiceImplTest : BehaviorSpec({
         }
 
         `when`("category found") {
+            every { categoryRepository.findByIdOrNull(any()) } returns category
+
+            then("it should return API Specs") {
+                val categoryId = 1L
+                every { apiInfoRepository.findByCategory(category) } returns apiInfoList
+
+                val result = specsService.getApiSpecByCategoryId(categoryId = categoryId)
+
+                result.shouldNotBeEmpty()
+                result.size shouldBe 2
+                result[0].endpoint shouldBe "/test"
+                verify { apiInfoRepository.findByCategory(category) }
+            }
+
             then("it should insert new API Spec") {
-                every { categoryRepository.findByIdOrNull(any()) } returns category
                 every { apiInfoRepository.save(any()) } returns apiInfo
 
                 val result = specsService.createApiSpecs(specsRequest)
@@ -102,14 +115,25 @@ class SpecsServiceImplTest : BehaviorSpec({
         }
 
         `when`("no category found") {
-            then("it should throw ResourceNotFoundException") {
-                every { categoryRepository.findByIdOrNull(any()) } returns null
+            every { categoryRepository.findByIdOrNull(any()) } returns null
+
+            then("getApiSpeByCategoryId method should throw ResourceNotFoundException") {
+                shouldThrow<ResourceNotFoundException> {
+                    specsService.getApiSpecByCategoryId(categoryId = 1L)
+                }
+
+                verify { categoryRepository.findByIdOrNull(any()) }
+                verify(exactly = 0) { apiInfoRepository.findByCategory(category) }
+            }
+
+            then("createApiSpec method should throw ResourceNotFoundException") {
 
                 shouldThrow<ResourceNotFoundException> {
                     specsService.createApiSpecs(specsRequest)
                 }
 
                 verify { categoryRepository.findByIdOrNull(any()) }
+                verify(exactly = 0) { apiInfoRepository.save(apiInfo) }
             }
         }
 

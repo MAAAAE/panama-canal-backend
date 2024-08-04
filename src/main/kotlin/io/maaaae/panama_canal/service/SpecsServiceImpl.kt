@@ -25,6 +25,14 @@ class SpecsServiceImpl(
         return apiInfos.map { it.toSpecDto() }.toList()
     }
 
+    @Transactional(readOnly = true)
+    override fun getApiSpecByCategoryId(categoryId: Long): List<SpecsDto> {
+        val category = categoryRepository.findByIdOrNull(categoryId)
+            ?: throw ResourceNotFoundException("Category not found. Please create category first. categoryId: $categoryId")
+        return apiInfoRepository.findByCategory(category)
+            .map { it.toSpecDto() }.toList()
+    }
+
     @Transactional
     override fun createApiSpecs(specsRequest: SpecsRequest): SpecsDto {
         val category = categoryRepository.findByIdOrNull(specsRequest.categoryId)

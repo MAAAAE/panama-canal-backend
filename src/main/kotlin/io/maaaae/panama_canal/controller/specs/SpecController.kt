@@ -22,10 +22,12 @@ import org.springframework.web.bind.annotation.RestController
 class SpecController(private val specsService: SpecsService) {
 
     @GetMapping("/all")
-    fun getAllApiInfo(): ResponseEntity<List<SpecsDto>> {
-        val apiInfos = specsService.getAllApiSpecs()
-        return ResponseEntity.ok(apiInfos)
-    }
+    fun getAllApiInfo(): ResponseEntity<List<SpecsDto>> =
+        ResponseEntity.ok(specsService.getAllApiSpecs())
+
+    @GetMapping("/category/{categoryId}")
+    fun getApiSpecByCategoryId(@PathVariable categoryId: Long): ResponseEntity<List<SpecsDto>> =
+        ResponseEntity.ok(specsService.getApiSpecByCategoryId(categoryId = categoryId))
 
     @PostMapping
     fun createApiInfo(@RequestBody @Valid specsRequest: SpecsRequest): ResponseEntity<SpecsDto> {
