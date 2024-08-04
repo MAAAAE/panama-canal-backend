@@ -2,7 +2,6 @@ package io.maaaae.panama_canal.dto.specs
 
 import io.maaaae.panama_canal.common.constant.Method
 import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Positive
 import jakarta.validation.constraints.Size
 

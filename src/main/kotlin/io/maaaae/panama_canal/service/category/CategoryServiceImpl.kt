@@ -7,11 +7,10 @@ import io.maaaae.panama_canal.dto.category.toResponse
 import io.maaaae.panama_canal.repository.category.CategoryRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
-import kotlin.NoSuchElementException
 
 
 @Service
-class CategoryServiceImpl(private val categoryRepository: CategoryRepository): CategoryService {
+class CategoryServiceImpl(private val categoryRepository: CategoryRepository) : CategoryService {
 
     @Transactional
     override fun getAllCategories(): List<CategoryResponse> {

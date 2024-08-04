@@ -16,6 +16,13 @@ spring:
           issuer-uri: http://localhost:18080/realms/myrealm
           jwk-set-uri: http://localhost:18080/realms/myrealm/protocol/openid-connect/certs
 
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+
 logging:
   level:
     org:

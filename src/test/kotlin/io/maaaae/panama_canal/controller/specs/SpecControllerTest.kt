@@ -19,6 +19,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
 
 @WebMvcTest(SpecController::class)
 class SpecControllerTest : DescribeSpec({
@@ -26,8 +27,12 @@ class SpecControllerTest : DescribeSpec({
     val objectMapper = ObjectMapper()
 
     val specController = SpecController(specsService = specsService)
+    val validator = LocalValidatorFactoryBean().apply {
+        afterPropertiesSet()
+    }
     val mockMvc = MockMvcBuilders
         .standaloneSetup(specController)
+        .setValidator(validator)
         .setControllerAdvice(GlobalExceptionHandler())
         .build()
 
@@ -60,6 +65,42 @@ class SpecControllerTest : DescribeSpec({
                     .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                     .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(1))
                     .andExpect(MockMvcResultMatchers.jsonPath("$[0].endpoint").value(specsDto.endpoint))
+            }
+        }
+
+        context("GET /specs/category/{categoryId}") {
+            val categoryId = 1L
+            it("should return API Spec of given categoryId") {
+                every { specsService.getApiSpecByCategoryId(categoryId) } returns listOf(specsDto)
+
+                mockMvc.perform(MockMvcRequestBuilders.get("/specs/category/$categoryId"))
+                    .andExpect(MockMvcResultMatchers.status().isOk)
+                    .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(1))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$[0].endpoint").value(specsDto.endpoint))
+            }
+
+            it("should return 404 Not Found when category not found") {
+                val errorMessage = "Category Not Found categoryId: $categoryId"
+                every { specsService.getApiSpecByCategoryId(categoryId) } throws ResourceNotFoundException(errorMessage)
+
+                mockMvc.perform(MockMvcRequestBuilders.get("/specs/category/$categoryId"))
+                    .andExpect(MockMvcResultMatchers.status().isNotFound)
+                    .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.errorCode").value(HttpStatus.NOT_FOUND.value()))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage").value(errorMessage))
+            }
+
+            it("should return 400 Bad Request when categoryId is invalid") {
+                val badCategoryId = "asdf"
+                val errorMessage = "Failed to convert value of type 'java.lang.String' to required type 'long'; For input string: \"$badCategoryId\""
+
+                mockMvc.perform(MockMvcRequestBuilders.get("/specs/category/$badCategoryId"))
+                    .andExpect(MockMvcResultMatchers.status().isBadRequest)
+                    .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.value()))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage").value(errorMessage))
+
             }
         }
 
@@ -136,7 +177,12 @@ class SpecControllerTest : DescribeSpec({
             )
             it("should update the API spec and return the updated spec") {
 
-                every { specsService.updateApiSpec(specId = specId, specsUpdateRequest = specsUpdateRequest) } returns updatedSpecDto
+                every {
+                    specsService.updateApiSpec(
+                        specId = specId,
+                        specsUpdateRequest = specsUpdateRequest
+                    )
+                } returns updatedSpecDto
 
                 mockMvc.perform(
                     MockMvcRequestBuilders.put("/specs/$specId")
