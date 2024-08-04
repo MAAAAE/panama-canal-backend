@@ -34,7 +34,7 @@ dependencies {
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	implementation("io.netty:netty-resolver-dns-native-macos")
 	implementation("org.xerial:sqlite-jdbc:3.41.2.2") // SQLite JDBC 드라이버 추가
-	implementation("jakarta.servlet:jakarta.servlet-api:5.0.0")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
 
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {

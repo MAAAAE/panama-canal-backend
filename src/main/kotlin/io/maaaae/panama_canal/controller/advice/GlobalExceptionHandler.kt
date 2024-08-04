@@ -28,7 +28,8 @@ class GlobalExceptionHandler {
                 errorCode = HttpStatus.NOT_FOUND.value().toString(),
                 errorMessage = ex.message,
             ),
-            HttpStatus.NOT_FOUND)
+            HttpStatus.NOT_FOUND
+        )
 
     private fun createErrorResponse(errorCode: String, errorMessage: String?): PanamaErrorResponse {
         return PanamaErrorResponse(

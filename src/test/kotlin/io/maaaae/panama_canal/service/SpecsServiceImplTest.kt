@@ -32,7 +32,7 @@ class SpecsServiceImplTest : BehaviorSpec({
     }
 
     given("SpecService") {
-        val category = Category(1, "Category1", "Description1")
+        val category = Category(1, "Category1", "Description1", "/endpoint")
         val apiInfo = ApiInfo(
             apiId = 1,
             name = "API Spec",
