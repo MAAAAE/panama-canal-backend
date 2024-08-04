@@ -2,7 +2,6 @@ package io.maaaae.panama_canal.controller.advice
 
 import io.maaaae.panama_canal.common.dto.PanamaErrorResponse
 import io.maaaae.panama_canal.common.exception.ResourceNotFoundException
-import jakarta.validation.ConstraintViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
