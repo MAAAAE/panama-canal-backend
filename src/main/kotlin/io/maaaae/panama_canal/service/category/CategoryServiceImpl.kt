@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class CategoryServiceImpl(private val categoryRepository: CategoryRepository) : CategoryService {
+class CategoryServiceImpl(
+    private val categoryRepository: CategoryRepository
+) : CategoryService {
 
     @Transactional
     override fun getAllCategories(): List<CategoryResponse> {

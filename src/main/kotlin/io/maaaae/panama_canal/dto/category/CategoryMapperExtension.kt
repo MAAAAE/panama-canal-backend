@@ -14,5 +14,6 @@ fun Category.toResponse() = CategoryResponse(
 fun CategoryRequest.toCreateEntity() = Category(
     name = name ?: throw NonNullableFieldException("name 은 null 일 수 없습니다."),
     description = description,
-    domain = domain ?: throw NonNullableFieldException("name 은 null 일 수 없습니다.")
+    domain = domain ?: throw NonNullableFieldException("domain 은 null 일 수 없습니다."),
+    secret = secret ?: throw NonNullableFieldException("secret 은 null 일 수 없습니다.")
 )
