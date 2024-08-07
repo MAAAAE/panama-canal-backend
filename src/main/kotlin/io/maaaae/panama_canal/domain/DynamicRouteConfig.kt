@@ -1,5 +1,7 @@
 package io.maaaae.panama_canal.domain
 
+import io.maaaae.panama_canal.dto.dynamic_route_config.DynamicRouteConfigRequest
+import io.maaaae.panama_canal.dto.dynamic_route_config.DynamicRouteConfigResponse
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -15,4 +17,12 @@ data class DynamicRouteConfig(
     val predicates: String,
     val filters: String,
     val routeOrder: Int
-)
+) {
+    fun update(dynamicRouteConfigRequest: DynamicRouteConfigRequest) {
+        TODO("Not yet implemented")
+    }
+
+    fun toResponse(): DynamicRouteConfigResponse {
+        return DynamicRouteConfigResponse()
+    }
+}

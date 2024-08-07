@@ -1,13 +1,7 @@
 package io.maaaae.panama_canal.domain
 
 import io.maaaae.panama_canal.domain.api_info.ApiInfo
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
@@ -15,8 +9,9 @@ import java.time.LocalDateTime
 data class ApiSecret(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val secretId: Long = 0,
-    @ManyToOne @JoinColumn(name = "api_id")
-    val api: ApiInfo,
+    @ManyToOne @JoinColumn(name = "category_id")
+    val category: Category,
+    @Column(nullable = false)
     val secretKey: String,
     val description: String,
     val createdAt: LocalDateTime = LocalDateTime.now(),

@@ -8,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
+import org.sqlite.SQLiteException
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
@@ -33,6 +34,12 @@ class GlobalExceptionHandler {
         createErrorResponseEntity(
             errorStatus = HttpStatus.NOT_FOUND,
             errorMessage = ex.message
+        )
+    @ExceptionHandler(SQLiteException::class)
+    fun handleSQLiteException(ex: SQLiteException): ResponseEntity<PanamaErrorResponse> =
+        createErrorResponseEntity(
+            errorStatus = HttpStatus.INTERNAL_SERVER_ERROR,
+            errorMessage = "error occur when handling data"
         )
 
 

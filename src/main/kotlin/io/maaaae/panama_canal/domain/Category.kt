@@ -1,12 +1,8 @@
 package io.maaaae.panama_canal.domain
 
+import io.maaaae.panama_canal.common.AESUtil
 import io.maaaae.panama_canal.dto.category.CategoryRequest
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "category")
@@ -16,11 +12,36 @@ data class Category(
     @Column(unique = true)
     var name: String,
     var description: String?,
+    @Column(nullable = false)
     var domain: String,
-) {
+    @Column(nullable = false)
+    var secret: String,
+
+    ) {
+
+    @PrePersist
+    @PreUpdate
+    fun encryptSecret() {
+        secret.let {
+            secret = AESUtil.encrypt(it)
+        }
+    }
+
+    @PostLoad
+    fun decryptSecret() {
+        secret.let {
+            secret = AESUtil.decrypt(it)
+        }
+    }
+
+    fun getDecryptedPassword(): String {
+        return secret
+    }
+
     fun update(categoryRequest: CategoryRequest) {
         categoryRequest.name?.let { name = it }
         categoryRequest.description?.let { description = it }
         categoryRequest.domain?.let { domain = it }
+        categoryRequest.secret?.let { secret = it }
     }
 }
