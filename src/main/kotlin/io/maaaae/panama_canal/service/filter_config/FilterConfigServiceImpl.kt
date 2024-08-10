@@ -18,7 +18,7 @@ class FilterConfigServiceImpl(private val filterConfigRepository: FilterConfigRe
 
     @Transactional
     override fun createFilterConfig(filterConfigRequest: FilterConfigRequest) {
-        filterConfigRepository.save(filterConfigRequest.toCreateEntity())
+        TODO("NOT YET IMPLEMENTED")
     }
 
 

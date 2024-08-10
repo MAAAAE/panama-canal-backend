@@ -1,13 +1,19 @@
 package io.maaaae.panama_canal.controller.dynamic_route_config
 
-import io.maaaae.panama_canal.dto.category.CategoryRequest
-import io.maaaae.panama_canal.dto.category.CategoryResponse
 import io.maaaae.panama_canal.dto.dynamic_route_config.DynamicRouteConfigRequest
 import io.maaaae.panama_canal.dto.dynamic_route_config.DynamicRouteConfigResponse
+import io.maaaae.panama_canal.dto.dynamic_route_config.DynamicRouteConfigUpdateRequest
 import io.maaaae.panama_canal.service.dynamic_route_config.DynamicRouteConfigService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
@@ -25,7 +31,10 @@ class DynamicRouteConfigController(private val dynamicRouteConfigService: Dynami
     }
 
     @PutMapping("/{id}")
-    fun updateCategory(@PathVariable id: Long, @RequestBody dynamicRouteConfigRequest: DynamicRouteConfigRequest): ResponseEntity<Void> {
+    fun updateCategory(
+        @PathVariable id: Long,
+        @RequestBody dynamicRouteConfigRequest: DynamicRouteConfigUpdateRequest
+    ): ResponseEntity<Void> {
         dynamicRouteConfigService.updateDynamicRouteConfig(id, dynamicRouteConfigRequest)
         return ResponseEntity(HttpStatus.OK)
     }

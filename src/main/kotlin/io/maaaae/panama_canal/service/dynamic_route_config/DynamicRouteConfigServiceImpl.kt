@@ -1,50 +1,53 @@
 package io.maaaae.panama_canal.service.dynamic_route_config
 
-import io.maaaae.panama_canal.domain.DynamicRouteConfig
+import io.maaaae.panama_canal.common.exception.ResourceNotFoundException
 import io.maaaae.panama_canal.dto.dynamic_route_config.DynamicRouteConfigRequest
 import io.maaaae.panama_canal.dto.dynamic_route_config.DynamicRouteConfigResponse
-import io.maaaae.panama_canal.dto.filter_config.FilterConfigRequest
-import io.maaaae.panama_canal.dto.filter_config.FilterConfigResponse
+import io.maaaae.panama_canal.dto.dynamic_route_config.DynamicRouteConfigUpdateRequest
+import io.maaaae.panama_canal.dto.dynamic_route_config.toDynamicRouteConfigEntity
+import io.maaaae.panama_canal.dto.dynamic_route_config.toDynamicRouteConfigResponse
 import io.maaaae.panama_canal.dto.filter_config.toCreateEntity
-import io.maaaae.panama_canal.dto.filter_config.toResponse
 import io.maaaae.panama_canal.repository.dynamic_route_config.DynamicRouteConfigRepository
 import io.maaaae.panama_canal.repository.filter_config.FilterConfigRepository
-import jakarta.transaction.Transactional
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
-class DynamicRouteConfigServiceImpl(private val dynamicRouteConfigRepository: DynamicRouteConfigRepository): DynamicRouteConfigService {
+class DynamicRouteConfigServiceImpl(
+    private val dynamicRouteConfigRepository: DynamicRouteConfigRepository,
+    private val filterConfigRepository: FilterConfigRepository
+) : DynamicRouteConfigService {
 
 
     @Transactional
     override fun createDynamicRouteConfig(dynamicRouteConfigRequest: DynamicRouteConfigRequest) {
-        dynamicRouteConfigRepository.save(dynamicRouteConfigRequest.toCreateEntity())
+        val createdRouteConfig = dynamicRouteConfigRepository.save(dynamicRouteConfigRequest.toDynamicRouteConfigEntity())
+        val targetFilters = dynamicRouteConfigRequest.filters.map { it.toCreateEntity(createdRouteConfig) }
+        filterConfigRepository.saveAll(targetFilters)
     }
 
 
-    @Transactional
+    @Transactional(readOnly = true)
     override fun getAllDynamicRouteConfigs(): List<DynamicRouteConfigResponse> {
         return dynamicRouteConfigRepository.findAll().asSequence()
-            .map { it.toResponse() }
+            .map { it.toDynamicRouteConfigResponse() }
             .toList()
     }
 
     @Transactional
-    override fun updateDynamicRouteConfig(id: Long, dynamicRouteConfigRequest: DynamicRouteConfigRequest) {
-        val routeConfig = dynamicRouteConfigRepository.findById(id)
-            .orElseThrow {
-                NoSuchElementException("category not found.")
-            }
+    override fun updateDynamicRouteConfig(id: Long, request: DynamicRouteConfigUpdateRequest) {
+        val routeConfig = dynamicRouteConfigRepository.findByIdOrNull(id)
+            ?: throw ResourceNotFoundException("Dynamic Route not found. id: $id")
+        routeConfig.update(request)
 
-        routeConfig.update(dynamicRouteConfigRequest)
+        // TODO: Filter Update
     }
 
     @Transactional
     override fun deleteDynamicRouteConfig(id: Long) {
-        dynamicRouteConfigRepository.deleteById(id)
+        val routeConfig = dynamicRouteConfigRepository.findByIdOrNull(id)
+            ?: throw ResourceNotFoundException("Dynamic Route not found. id: $id")
+        dynamicRouteConfigRepository.delete(routeConfig)
     }
-}
-
-private fun DynamicRouteConfigRequest.toCreateEntity(): DynamicRouteConfig {
-    TODO("Not yet implemented")
 }
