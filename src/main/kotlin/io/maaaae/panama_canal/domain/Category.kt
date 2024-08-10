@@ -14,34 +14,46 @@ data class Category(
     var description: String?,
     @Column(nullable = false)
     var domain: String,
+    var secretKey: String,
     @Column(nullable = false)
-    var secret: String,
+    var secretValue: String,
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    var secretType: SecretType
 
-    ) {
+) {
 
     @PrePersist
     @PreUpdate
     fun encryptSecret() {
-        secret.let {
-            secret = AESUtil.encrypt(it)
+        secretValue.let {
+            secretValue = AESUtil.encrypt(it)
         }
     }
 
     @PostLoad
     fun decryptSecret() {
-        secret.let {
-            secret = AESUtil.decrypt(it)
+        secretValue.let {
+            secretValue = AESUtil.decrypt(it)
         }
     }
 
     fun getDecryptedPassword(): String {
-        return secret
+        return secretValue
     }
 
     fun update(categoryRequest: CategoryRequest) {
         categoryRequest.name?.let { name = it }
         categoryRequest.description?.let { description = it }
         categoryRequest.domain?.let { domain = it }
-        categoryRequest.secret?.let { secret = it }
+        categoryRequest.secretValue?.let { secretValue = it }
+        categoryRequest.secretKey?.let { secretKey = it }
+        categoryRequest.secretType?.let { secretType = it }
     }
+}
+
+enum class SecretType {
+    PARAMETER,
+    HEADER,
+    NONE
 }
