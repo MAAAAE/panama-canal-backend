@@ -21,7 +21,4 @@ data class SpecsRequest(
 
     @field:NotBlank(message = "Custom Route must not be blank")
     val customRoute: String,
-
-    @field:NotBlank(message = "Headers must not be blank")
-    val headers: String
 )

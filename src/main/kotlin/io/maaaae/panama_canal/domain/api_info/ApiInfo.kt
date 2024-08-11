@@ -27,7 +27,6 @@ data class ApiInfo(
     var endpoint: String,
     @Enumerated(EnumType.STRING)
     var method: Method,
-    var headers: String,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "route_config_id", insertable = false, updatable = false)
     var routeConfig: DynamicRouteConfig? = null,
@@ -37,7 +36,7 @@ data class ApiInfo(
 ) {
     fun update(specsUpdateRequest: SpecsUpdateRequest) {
         specsUpdateRequest.endpoint?.let { this.endpoint = it }
-        specsUpdateRequest.headers?.let { this.headers = it }
         specsUpdateRequest.method?.let { this.method = it }
+        specsUpdateRequest.name?.let { this.name = it }
     }
 }
