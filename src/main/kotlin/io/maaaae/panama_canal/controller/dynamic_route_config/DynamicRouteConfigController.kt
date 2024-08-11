@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/dynamic-route")
 class DynamicRouteConfigController(private val dynamicRouteConfigService: DynamicRouteConfigService) {
     @GetMapping("/all")
-    fun getCategories(): ResponseEntity<List<DynamicRouteConfigResponse>> {
+    fun getAllDynamicRouteConfig(): ResponseEntity<List<DynamicRouteConfigResponse>> {
         return ResponseEntity.ok(dynamicRouteConfigService.getAllDynamicRouteConfigs())
     }
 
@@ -31,13 +31,13 @@ class DynamicRouteConfigController(private val dynamicRouteConfigService: Dynami
     }
 
     @PostMapping
-    fun createCategory(@RequestBody dynamicRouteConfigRequest: DynamicRouteConfigRequest): ResponseEntity<Void> {
+    fun createDynamicRouteConfigRequest(@RequestBody dynamicRouteConfigRequest: DynamicRouteConfigRequest): ResponseEntity<Void> {
         dynamicRouteConfigService.createDynamicRouteConfig(dynamicRouteConfigRequest)
         return ResponseEntity(HttpStatus.CREATED)
     }
 
     @PutMapping("/{id}")
-    fun updateCategory(
+    fun updateDynamicRouteConfig(
         @PathVariable id: Long,
         @RequestBody dynamicRouteConfigRequest: DynamicRouteConfigUpdateRequest
     ): ResponseEntity<Void> {
@@ -46,7 +46,7 @@ class DynamicRouteConfigController(private val dynamicRouteConfigService: Dynami
     }
 
     @DeleteMapping("/{id}")
-    fun deleteCategory(@PathVariable id: Long): ResponseEntity<Void> {
+    fun deleteDynamicRouteConfig(@PathVariable id: Long): ResponseEntity<Void> {
         dynamicRouteConfigService.deleteDynamicRouteConfig(id)
         return ResponseEntity(HttpStatus.OK)
     }

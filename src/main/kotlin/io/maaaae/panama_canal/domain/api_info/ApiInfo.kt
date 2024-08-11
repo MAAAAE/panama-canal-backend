@@ -43,5 +43,7 @@ data class ApiInfo(
         specsUpdateRequest.endpoint?.let { this.endpoint = it }
         specsUpdateRequest.method?.let { this.method = it }
         specsUpdateRequest.name?.let { this.name = it }
+        specsUpdateRequest.request?.let { this.request = it }
+        specsUpdateRequest.response?.let { this.response = it }
     }
 }

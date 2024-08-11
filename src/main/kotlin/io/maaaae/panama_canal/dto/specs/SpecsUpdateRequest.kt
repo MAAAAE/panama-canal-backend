@@ -8,4 +8,6 @@ data class SpecsUpdateRequest(
     val endpoint: String? = null,
     val name: String? = null,
     val method: Method? = null,
+    val request: String? = null,
+    val response: String? = null,
 )
