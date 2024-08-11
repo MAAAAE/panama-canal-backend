@@ -16,3 +16,8 @@ fun DynamicRouteConfigRequest.toDynamicRouteConfigEntity() = DynamicRouteConfig(
     predicates = this.predicate,
     routeOrder = this.routeOrder,
 )
+
+fun DynamicRouteConfig.toSimpleDynamicRouteConfigResponse() = DynamicRouteConfigOptions(
+    id = this.id,
+    label = "${this.predicates} - ${this.uri}",
+)

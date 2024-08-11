@@ -14,5 +14,7 @@ fun SpecsRequest.toApiInfoEntity(category: Category) = ApiInfo(
     name = this.name,
     endpoint = this.endpoint,
     method = this.method,
+    request = this.request,
+    response = this.response,
     category = category,
 )

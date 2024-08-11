@@ -3,6 +3,7 @@ package io.maaaae.panama_canal.controller.dynamic_route_config
 import io.maaaae.panama_canal.dto.dynamic_route_config.DynamicRouteConfigRequest
 import io.maaaae.panama_canal.dto.dynamic_route_config.DynamicRouteConfigResponse
 import io.maaaae.panama_canal.dto.dynamic_route_config.DynamicRouteConfigUpdateRequest
+import io.maaaae.panama_canal.dto.dynamic_route_config.DynamicRouteConfigOptions
 import io.maaaae.panama_canal.service.dynamic_route_config.DynamicRouteConfigService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -22,6 +23,11 @@ class DynamicRouteConfigController(private val dynamicRouteConfigService: Dynami
     @GetMapping("/all")
     fun getCategories(): ResponseEntity<List<DynamicRouteConfigResponse>> {
         return ResponseEntity.ok(dynamicRouteConfigService.getAllDynamicRouteConfigs())
+    }
+
+    @GetMapping("/options")
+    fun getDynamicRouteConfigOptions(): ResponseEntity<List<DynamicRouteConfigOptions>> {
+        return ResponseEntity.ok(dynamicRouteConfigService.getDynamicRouteConfigOptions())
     }
 
     @PostMapping

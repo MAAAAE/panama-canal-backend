@@ -9,3 +9,8 @@ data class DynamicRouteConfigResponse(
     val routeOrder: Int,
     val filters: List<FilterConfigResponse>
 )
+
+data class DynamicRouteConfigOptions(
+    val id: Long,
+    val label: String,
+)

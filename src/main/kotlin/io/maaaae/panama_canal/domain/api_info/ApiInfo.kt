@@ -5,6 +5,7 @@ import io.maaaae.panama_canal.common.constant.PanamaConfig
 import io.maaaae.panama_canal.domain.Category
 import io.maaaae.panama_canal.domain.DynamicRouteConfig
 import io.maaaae.panama_canal.dto.specs.SpecsUpdateRequest
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
@@ -27,6 +28,10 @@ data class ApiInfo(
     var endpoint: String,
     @Enumerated(EnumType.STRING)
     var method: Method,
+    @Column(columnDefinition = "TEXT")
+    var request: String,
+    @Column(columnDefinition = "TEXT")
+    var response: String,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "route_config_id", insertable = false, updatable = false)
     var routeConfig: DynamicRouteConfig? = null,

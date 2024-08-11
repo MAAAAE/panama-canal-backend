@@ -4,8 +4,10 @@ import io.maaaae.panama_canal.common.exception.ResourceNotFoundException
 import io.maaaae.panama_canal.dto.dynamic_route_config.DynamicRouteConfigRequest
 import io.maaaae.panama_canal.dto.dynamic_route_config.DynamicRouteConfigResponse
 import io.maaaae.panama_canal.dto.dynamic_route_config.DynamicRouteConfigUpdateRequest
+import io.maaaae.panama_canal.dto.dynamic_route_config.DynamicRouteConfigOptions
 import io.maaaae.panama_canal.dto.dynamic_route_config.toDynamicRouteConfigEntity
 import io.maaaae.panama_canal.dto.dynamic_route_config.toDynamicRouteConfigResponse
+import io.maaaae.panama_canal.dto.dynamic_route_config.toSimpleDynamicRouteConfigResponse
 import io.maaaae.panama_canal.dto.filter_config.toCreateEntity
 import io.maaaae.panama_canal.repository.dynamic_route_config.DynamicRouteConfigRepository
 import io.maaaae.panama_canal.repository.filter_config.FilterConfigRepository
@@ -31,11 +33,17 @@ class DynamicRouteConfigServiceImpl(
 
 
     @Transactional(readOnly = true)
-    override fun getAllDynamicRouteConfigs(): List<DynamicRouteConfigResponse> {
-        return dynamicRouteConfigRepository.findAll().asSequence()
+    override fun getAllDynamicRouteConfigs(): List<DynamicRouteConfigResponse> =
+        dynamicRouteConfigRepository.findAll().asSequence()
             .map { it.toDynamicRouteConfigResponse() }
             .toList()
-    }
+
+
+    @Transactional(readOnly = true)
+    override fun getDynamicRouteConfigOptions(): List<DynamicRouteConfigOptions> =
+        dynamicRouteConfigRepository.findAll().asSequence()
+            .map { it.toSimpleDynamicRouteConfigResponse() }
+            .toList()
 
     @Transactional
     override fun updateDynamicRouteConfig(id: Long, request: DynamicRouteConfigUpdateRequest) {
