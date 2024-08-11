@@ -9,6 +9,7 @@ import io.maaaae.panama_canal.dto.dynamic_route_config.toDynamicRouteConfigRespo
 import io.maaaae.panama_canal.dto.filter_config.toCreateEntity
 import io.maaaae.panama_canal.repository.dynamic_route_config.DynamicRouteConfigRepository
 import io.maaaae.panama_canal.repository.filter_config.FilterConfigRepository
+import io.maaaae.panama_canal.service.filter_config.FilterConfigService
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -16,7 +17,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class DynamicRouteConfigServiceImpl(
     private val dynamicRouteConfigRepository: DynamicRouteConfigRepository,
-    private val filterConfigRepository: FilterConfigRepository
+    private val filterConfigRepository: FilterConfigRepository,
+    private val filterConfigService: FilterConfigService,
 ) : DynamicRouteConfigService {
 
 
@@ -41,7 +43,8 @@ class DynamicRouteConfigServiceImpl(
             ?: throw ResourceNotFoundException("Dynamic Route not found. id: $id")
         routeConfig.update(request)
 
-        // TODO: Filter Update
+        // TODO: 필터에 대한 업데이트 및 삭제를 어떻게 할것인지 확인이 필요함.
+        request.filters?.forEach { filterConfigService.updateFilterConfig(it) }
     }
 
     @Transactional

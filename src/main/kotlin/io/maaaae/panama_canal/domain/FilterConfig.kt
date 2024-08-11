@@ -2,6 +2,7 @@ package io.maaaae.panama_canal.domain
 
 import io.maaaae.panama_canal.common.constant.PanamaConfig
 import io.maaaae.panama_canal.dto.filter_config.FilterConfigRequest
+import io.maaaae.panama_canal.dto.filter_config.FilterConfigUpdateRequest
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
@@ -23,8 +24,10 @@ data class FilterConfig(
     var param: String,
     var value: String
 ) {
-    fun update(filterConfigRequest: FilterConfigRequest) {
-        TODO("Not yet implemented")
+    fun update(filterConfigUpdateRequest: FilterConfigUpdateRequest) {
+        filterConfigUpdateRequest.filterName?.let { filterName = it }
+        filterConfigUpdateRequest.param?.let { param = it }
+        filterConfigUpdateRequest.value?.let { value = it }
     }
 
     fun setRoute(dynamicRouteConfig: DynamicRouteConfig) {
