@@ -3,6 +3,7 @@ package io.maaaae.panama_canal.controller
 import io.maaaae.panama_canal.dto.category.CategoryRequest
 import io.maaaae.panama_canal.dto.category.CategoryResponse
 import io.maaaae.panama_canal.service.category.CategoryService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -25,13 +26,13 @@ class CategoryController(private val categoryService: CategoryService) {
     }
 
     @PostMapping
-    fun createCategory(@RequestBody categoryRequest: CategoryRequest): ResponseEntity<Void> {
+    fun createCategory(@RequestBody @Valid categoryRequest: CategoryRequest): ResponseEntity<Void> {
         categoryService.createCategory(categoryRequest)
         return ResponseEntity(HttpStatus.CREATED)
     }
 
     @PutMapping("/{id}")
-    fun updateCategory(@PathVariable id: Long, @RequestBody categoryRequest: CategoryRequest): ResponseEntity<Void> {
+    fun updateCategory(@PathVariable id: Long, @RequestBody @Valid categoryRequest: CategoryRequest): ResponseEntity<Void> {
         categoryService.updateCategory(id, categoryRequest)
         return ResponseEntity(HttpStatus.OK)
     }
