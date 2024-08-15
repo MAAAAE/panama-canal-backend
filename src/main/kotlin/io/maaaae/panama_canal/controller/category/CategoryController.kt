@@ -26,6 +26,10 @@ class CategoryController(private val categoryService: CategoryService) {
         return ResponseEntity.ok(categoryService.getAllCategories())
     }
 
+    @GetMapping("/{id}")
+    fun getCategoryById(@PathVariable id: Long): ResponseEntity<CategoryResponse> =
+        ResponseEntity.ok(categoryService.getCategoryById(id))
+
     @GetMapping("/options")
     fun getCategoryOptions(): ResponseEntity<List<CategoryOptionResponse>> =
         ResponseEntity.ok(categoryService.getAllCategoryOptions())

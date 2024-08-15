@@ -33,10 +33,9 @@ data class ApiInfo(
     @Column(columnDefinition = "TEXT")
     var response: String,
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "route_config_id")
+    @JoinColumn(name = "route_config_id", updatable = false)
     var routeConfig: DynamicRouteConfig? = null,
-    // TODO: remove
-    @ManyToOne @JoinColumn(name = "category_id")
+    @ManyToOne @JoinColumn(name = "category_id", updatable = false)
     var category: Category
 ) {
     fun update(specsUpdateRequest: SpecsUpdateRequest) {

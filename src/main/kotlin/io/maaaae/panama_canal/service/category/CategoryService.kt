@@ -6,6 +6,7 @@ import io.maaaae.panama_canal.dto.category.CategoryResponse
 
 interface CategoryService {
     fun getAllCategories(): List<CategoryResponse>
+    fun getCategoryById(id: Long): CategoryResponse
     fun getAllCategoryOptions(): List<CategoryOptionResponse>
     fun createCategory(categoryRequest: CategoryRequest)
     fun updateCategory(id: Long, categoryRequest: CategoryRequest)

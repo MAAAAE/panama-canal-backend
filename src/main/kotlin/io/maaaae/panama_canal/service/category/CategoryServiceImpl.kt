@@ -1,5 +1,6 @@
 package io.maaaae.panama_canal.service.category
 
+import io.maaaae.panama_canal.common.exception.ResourceNotFoundException
 import io.maaaae.panama_canal.dto.category.CategoryOptionResponse
 import io.maaaae.panama_canal.dto.category.CategoryRequest
 import io.maaaae.panama_canal.dto.category.CategoryResponse
@@ -7,6 +8,7 @@ import io.maaaae.panama_canal.dto.category.toCreateEntity
 import io.maaaae.panama_canal.dto.category.toOptionResponse
 import io.maaaae.panama_canal.dto.category.toResponse
 import io.maaaae.panama_canal.repository.category.CategoryRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -22,6 +24,12 @@ class CategoryServiceImpl(
             .map { it.toResponse() }
             .toList()
     }
+
+    @Transactional(readOnly = true)
+    override fun getCategoryById(id: Long): CategoryResponse =
+        categoryRepository.findById(id).orElseThrow {
+            throw ResourceNotFoundException("Category Not found. id: $id")
+        }.toResponse()
 
     @Transactional(readOnly = true)
     override fun getAllCategoryOptions(): List<CategoryOptionResponse> {
