@@ -7,4 +7,5 @@ data class SpecsDto(
     val endpoint: String,
     val method: Method,
     val categoryId: Long,
+    val routeConfigId: Long,
 )

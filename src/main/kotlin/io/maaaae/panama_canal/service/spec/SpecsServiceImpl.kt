@@ -1,4 +1,4 @@
-package io.maaaae.panama_canal.service
+package io.maaaae.panama_canal.service.spec
 
 import io.maaaae.panama_canal.common.exception.ResourceNotFoundException
 import io.maaaae.panama_canal.dto.specs.SpecsDto
@@ -8,6 +8,7 @@ import io.maaaae.panama_canal.dto.specs.toApiInfoEntity
 import io.maaaae.panama_canal.dto.specs.toSpecDto
 import io.maaaae.panama_canal.repository.api_info.ApiInfoRepository
 import io.maaaae.panama_canal.repository.category.CategoryRepository
+import io.maaaae.panama_canal.repository.dynamic_route_config.DynamicRouteConfigRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional
 class SpecsServiceImpl(
     private val apiInfoRepository: ApiInfoRepository,
     private val categoryRepository: CategoryRepository,
+    private val dynamicRouteConfigRepository: DynamicRouteConfigRepository,
 ) : SpecsService {
 
     @Transactional(readOnly = true)
@@ -37,7 +39,14 @@ class SpecsServiceImpl(
     override fun createApiSpecs(specsRequest: SpecsRequest): SpecsDto {
         val category = categoryRepository.findByIdOrNull(specsRequest.categoryId)
             ?: throw ResourceNotFoundException("Category not found. Please create category first. categoryId: ${specsRequest.categoryId}")
-        val createdApiInfo = apiInfoRepository.save(specsRequest.toApiInfoEntity(category))
+
+        val routeConfig = dynamicRouteConfigRepository.findByIdOrNull(specsRequest.customRouteId)
+            ?:throw ResourceNotFoundException("Dynamic Route Config not found. Please check dynamic route config. RouteId: ${specsRequest.customRouteId}")
+
+        val createdApiInfo = apiInfoRepository.save(specsRequest.toApiInfoEntity(
+            category=category,
+            routeConfig=routeConfig)
+        )
         return createdApiInfo.toSpecDto()
     }
 

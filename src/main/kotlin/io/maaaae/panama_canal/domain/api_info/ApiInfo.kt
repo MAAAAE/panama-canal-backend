@@ -33,7 +33,7 @@ data class ApiInfo(
     @Column(columnDefinition = "TEXT")
     var response: String,
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "route_config_id", insertable = false, updatable = false)
+    @JoinColumn(name = "route_config_id")
     var routeConfig: DynamicRouteConfig? = null,
     // TODO: remove
     @ManyToOne @JoinColumn(name = "category_id")

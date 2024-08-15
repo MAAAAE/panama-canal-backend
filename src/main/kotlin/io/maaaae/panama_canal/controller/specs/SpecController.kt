@@ -3,7 +3,7 @@ package io.maaaae.panama_canal.controller.specs
 import io.maaaae.panama_canal.dto.specs.SpecsDto
 import io.maaaae.panama_canal.dto.specs.SpecsRequest
 import io.maaaae.panama_canal.dto.specs.SpecsUpdateRequest
-import io.maaaae.panama_canal.service.SpecsService
+import io.maaaae.panama_canal.service.spec.SpecsService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

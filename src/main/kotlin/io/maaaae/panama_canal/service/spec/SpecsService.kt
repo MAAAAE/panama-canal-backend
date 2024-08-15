@@ -1,4 +1,4 @@
-package io.maaaae.panama_canal.service
+package io.maaaae.panama_canal.service.spec
 
 import io.maaaae.panama_canal.dto.specs.SpecsDto
 import io.maaaae.panama_canal.dto.specs.SpecsRequest
