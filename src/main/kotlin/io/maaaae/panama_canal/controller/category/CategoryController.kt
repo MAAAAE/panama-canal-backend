@@ -1,4 +1,4 @@
-package io.maaaae.panama_canal.controller
+package io.maaaae.panama_canal.controller.category
 
 import io.maaaae.panama_canal.dto.category.CategoryOptionResponse
 import io.maaaae.panama_canal.dto.category.CategoryRequest

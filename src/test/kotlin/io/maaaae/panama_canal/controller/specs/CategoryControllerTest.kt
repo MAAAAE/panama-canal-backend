@@ -3,7 +3,7 @@
 //import com.fasterxml.jackson.databind.ObjectMapper
 //import io.kotest.core.spec.style.DescribeSpec
 //import io.maaaae.panama_canal.common.exception.ResourceNotFoundException
-//import io.maaaae.panama_canal.controller.CategoryController
+//import io.maaaae.panama_canal.controller.category.CategoryController
 //import io.maaaae.panama_canal.controller.advice.GlobalExceptionHandler
 //import io.maaaae.panama_canal.domain.Category
 //import io.maaaae.panama_canal.dto.category.CategoryRequest
