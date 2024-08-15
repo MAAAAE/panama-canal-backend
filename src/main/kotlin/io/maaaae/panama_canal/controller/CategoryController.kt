@@ -1,5 +1,6 @@
 package io.maaaae.panama_canal.controller
 
+import io.maaaae.panama_canal.dto.category.CategoryOptionResponse
 import io.maaaae.panama_canal.dto.category.CategoryRequest
 import io.maaaae.panama_canal.dto.category.CategoryResponse
 import io.maaaae.panama_canal.service.category.CategoryService
@@ -24,6 +25,10 @@ class CategoryController(private val categoryService: CategoryService) {
     fun getCategories(): ResponseEntity<List<CategoryResponse>> {
         return ResponseEntity.ok(categoryService.getAllCategories())
     }
+
+    @GetMapping("/options")
+    fun getCategoryOptions(): ResponseEntity<List<CategoryOptionResponse>> =
+        ResponseEntity.ok(categoryService.getAllCategoryOptions())
 
     @PostMapping
     fun createCategory(@RequestBody @Valid categoryRequest: CategoryRequest): ResponseEntity<Void> {

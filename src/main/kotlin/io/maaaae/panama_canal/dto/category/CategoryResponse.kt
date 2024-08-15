@@ -11,3 +11,8 @@ data class CategoryResponse(
     val secretKey: String,
     val secretType: SecretType,
 )
+
+data class CategoryOptionResponse(
+    val id: Long,
+    val label: String,
+)

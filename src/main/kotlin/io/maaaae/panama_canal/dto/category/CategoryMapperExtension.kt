@@ -13,6 +13,11 @@ fun Category.toResponse() = CategoryResponse(
     description = description
 )
 
+fun Category.toOptionResponse() = CategoryOptionResponse(
+    id = categoryId,
+    label = name,
+)
+
 fun CategoryRequest.toCreateEntity() = Category(
     name = name ?: throw NonNullableFieldException("name 은 null 일 수 없습니다."),
     description = description,
