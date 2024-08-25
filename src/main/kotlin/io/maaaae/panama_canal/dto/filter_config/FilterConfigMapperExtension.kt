@@ -4,23 +4,17 @@ import io.maaaae.panama_canal.domain.DynamicRouteConfig
 import io.maaaae.panama_canal.domain.FilterConfig
 
 fun FilterConfig.toResponse() = FilterConfigResponse(
-//    id = categoryId,
-//    name = name,
-//    domain = domain,
-//    secret = "secret",
-//    description = description
+    id = this.id,
+    filterName = this.filterName,
+    param = this.param,
+    value = this.value,
 )
 
-fun FilterConfigRequest.toCreateEntity() = FilterConfig(
-    filterName = "test",
-    param = "test",
-    value = "test",
-    dynamicRouteConfig = DynamicRouteConfig(
-        uri = "",
-        predicates = "",
-        filters = "",
-        routeOrder = 1
-    )
+fun FilterConfigRequest.toCreateEntity(dynamicRouteConfig: DynamicRouteConfig) = FilterConfig(
+    filterName = this.filterName,
+    param = this.param,
+    value = this.value,
+    dynamicRouteConfig = dynamicRouteConfig
 )
 
 fun FilterConfig.setRoute(dynamicRouteConfig: DynamicRouteConfig) {

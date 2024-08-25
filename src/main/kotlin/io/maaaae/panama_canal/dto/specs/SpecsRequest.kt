@@ -19,9 +19,10 @@ data class SpecsRequest(
     @field:Positive(message = "Category Id must be positive digit")
     val categoryId: Long,
 
-    @field:NotBlank(message = "Custom Route must not be blank")
-    val customRoute: String,
+    @field:Positive(message = "Custom Route id must be positive digit")
+    val customRouteId: Long,
 
-    @field:NotBlank(message = "Headers must not be blank")
-    val headers: String
+    val request: String,
+
+    val response: String,
 )

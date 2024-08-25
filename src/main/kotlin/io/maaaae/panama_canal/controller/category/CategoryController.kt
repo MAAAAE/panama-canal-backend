@@ -1,5 +1,6 @@
-package io.maaaae.panama_canal.controller
+package io.maaaae.panama_canal.controller.category
 
+import io.maaaae.panama_canal.dto.category.CategoryOptionResponse
 import io.maaaae.panama_canal.dto.category.CategoryRequest
 import io.maaaae.panama_canal.dto.category.CategoryResponse
 import io.maaaae.panama_canal.service.category.CategoryService
@@ -21,9 +22,16 @@ import org.springframework.web.bind.annotation.RestController
 class CategoryController(private val categoryService: CategoryService) {
 
     @GetMapping("/all")
-    fun getCategories(): ResponseEntity<List<CategoryResponse>> {
-        return ResponseEntity.ok(categoryService.getAllCategories())
-    }
+    fun getCategories(): ResponseEntity<List<CategoryResponse>> =
+        ResponseEntity.ok(categoryService.getAllCategories())
+
+    @GetMapping("/{id}")
+    fun getCategoryById(@PathVariable id: Long): ResponseEntity<CategoryResponse> =
+        ResponseEntity.ok(categoryService.getCategoryById(id))
+
+    @GetMapping("/options")
+    fun getCategoryOptions(): ResponseEntity<List<CategoryOptionResponse>> =
+        ResponseEntity.ok(categoryService.getAllCategoryOptions())
 
     @PostMapping
     fun createCategory(@RequestBody @Valid categoryRequest: CategoryRequest): ResponseEntity<Void> {

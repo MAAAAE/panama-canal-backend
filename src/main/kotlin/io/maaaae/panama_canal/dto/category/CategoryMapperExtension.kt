@@ -2,6 +2,7 @@ package io.maaaae.panama_canal.dto.category
 
 import io.maaaae.panama_canal.common.exception.NonNullableFieldException
 import io.maaaae.panama_canal.domain.Category
+import io.maaaae.panama_canal.dto.menu.MenuResponse
 
 fun Category.toResponse() = CategoryResponse(
     id = categoryId,
@@ -11,6 +12,16 @@ fun Category.toResponse() = CategoryResponse(
     secretKey = secretKey,
     secretType = secretType,
     description = description
+)
+
+fun Category.toOptionResponse() = CategoryOptionResponse(
+    id = categoryId,
+    label = name,
+)
+
+fun Category.toMenuResponse() = MenuResponse(
+    id = categoryId,
+    label = name,
 )
 
 fun CategoryRequest.toCreateEntity() = Category(
