@@ -18,6 +18,7 @@ class SecurityConfig {
                 exchanges
                     .requestMatchers("/actuator/**").permitAll()
                     .requestMatchers("/specs/**").permitAll() // Debug
+                    .requestMatchers("/api/**").permitAll()
                     .anyRequest().permitAll()
             }
             .oauth2ResourceServer {

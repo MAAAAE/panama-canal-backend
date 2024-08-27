@@ -9,7 +9,7 @@ spring:
     driverClassName: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME:org.sqlite.JDBC}
   jpa:
     hibernate:
-      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:create}
     show-sql: ${SPRING_JPA_SHOW_SQL:true}
     database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.community.dialect.SQLiteDialect}
   security:
