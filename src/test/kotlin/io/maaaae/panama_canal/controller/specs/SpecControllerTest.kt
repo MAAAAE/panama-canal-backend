@@ -13,6 +13,7 @@ import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import org.jeasy.random.EasyRandom
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -25,6 +26,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
 class SpecControllerTest : DescribeSpec({
     val specsService: SpecsService = mockk<SpecsService>()
     val objectMapper = ObjectMapper()
+    val easyRandom = EasyRandom()
 
     val specController = SpecController(specsService = specsService)
     val validator = LocalValidatorFactoryBean().apply {
@@ -40,20 +42,8 @@ class SpecControllerTest : DescribeSpec({
         clearAllMocks()
     }
 
-    val specsDto = SpecsDto(
-        endpoint = "/test",
-        method = Method.GET,
-        headers = "Content-Type: application/json",
-        categoryId = 1L
-    )
-    val specsRequest = SpecsRequest(
-        name = "API Spec",
-        endpoint = "/test",
-        method = Method.GET,
-        categoryId = 1L,
-        customRoute = "/custom",
-        headers = "Content-Type: application/json"
-    )
+    val specsDto = easyRandom.nextObject(SpecsDto::class.java)
+    val specsRequest = easyRandom.nextObject(SpecsRequest::class.java)
 
     describe("SpecController") {
         context("GET /specs/all") {
@@ -135,15 +125,10 @@ class SpecControllerTest : DescribeSpec({
                     "categoryId"
                 ),
                 Triple(
-                    specsRequest.copy(customRoute = ""),
-                    "Custom Route must not be blank",
-                    "customRoute"
+                    specsRequest.copy(customRouteId = -1L),
+                    "Custom Route Id must be positive digit",
+                    "customRouteId"
                 ),
-                Triple(
-                    specsRequest.copy(headers = ""),
-                    "Headers must not be blank",
-                    "headers"
-                )
             )
 
             testCases.forEach { (invalidRequest, expectedErrorMessage, fieldName) ->
@@ -164,17 +149,8 @@ class SpecControllerTest : DescribeSpec({
 
         context("PUT /specs/{id}") {
             val specId = 1L
-            val specsUpdateRequest = SpecsUpdateRequest(
-                endpoint = "/new-endpoint",
-                method = Method.POST,
-                headers = "new-header: value"
-            )
-            val updatedSpecDto = SpecsDto(
-                endpoint = "/new-endpoint",
-                method = Method.POST,
-                categoryId = 1L,
-                headers = "new-header: value"
-            )
+            val specsUpdateRequest = easyRandom.nextObject(SpecsUpdateRequest::class.java)
+            val updatedSpecDto = easyRandom.nextObject(SpecsDto::class.java)
             it("should update the API spec and return the updated spec") {
 
                 every {
@@ -193,7 +169,7 @@ class SpecControllerTest : DescribeSpec({
                     .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                     .andExpect(MockMvcResultMatchers.jsonPath("$.endpoint").value(updatedSpecDto.endpoint))
                     .andExpect(MockMvcResultMatchers.jsonPath("$.method").value(updatedSpecDto.method.toString()))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.headers").value(updatedSpecDto.headers))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.request").value(updatedSpecDto.request))
 
                 verify(exactly = 1) { specsService.updateApiSpec(specId, specsUpdateRequest) }
             }
