@@ -14,6 +14,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.jeasy.random.EasyRandom
+import org.jeasy.random.EasyRandomParameters
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -26,7 +27,9 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
 class SpecControllerTest : DescribeSpec({
     val specsService: SpecsService = mockk<SpecsService>()
     val objectMapper = ObjectMapper()
-    val easyRandom = EasyRandom()
+    val easyRandomParameters = EasyRandomParameters()
+        .randomize(Long::class.java) { (1..Long.MAX_VALUE).random() }
+    val easyRandom = EasyRandom(easyRandomParameters)
 
     val specController = SpecController(specsService = specsService)
     val validator = LocalValidatorFactoryBean().apply {
@@ -126,7 +129,7 @@ class SpecControllerTest : DescribeSpec({
                 ),
                 Triple(
                     specsRequest.copy(customRouteId = -1L),
-                    "Custom Route Id must be positive digit",
+                    "Custom Route id must be positive digit",
                     "customRouteId"
                 ),
             )
