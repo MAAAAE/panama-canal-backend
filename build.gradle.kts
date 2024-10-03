@@ -47,6 +47,8 @@ dependencies {
 	testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.3")
 	testImplementation("io.kotest:kotest-framework-engine:5.8.0")
 
+	testImplementation("org.jeasy:easy-random-core:5.0.0")
+
 	// Mockk
 	testImplementation("io.mockk:mockk:1.12.0")
 

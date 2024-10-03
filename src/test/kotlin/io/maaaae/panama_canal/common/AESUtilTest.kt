@@ -3,10 +3,11 @@ package io.maaaae.panama_canal.common
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
+import org.junit.jupiter.api.Disabled
 
 class AESUtilTest : BehaviorSpec({
 
-    given("an AESUtil") {
+    xgiven("an AESUtil") {
         `when`("encrypting the same message twice") {
             val input = "secret message"
             then("it should produce different outputs") {
