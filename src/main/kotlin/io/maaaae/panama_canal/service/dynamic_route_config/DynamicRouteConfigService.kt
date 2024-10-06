@@ -16,4 +16,6 @@ interface DynamicRouteConfigService {
 
     fun updateDynamicRouteConfig(id: Long, request: DynamicRouteConfigUpdateRequest)
     fun getDynamicRouteConfigOptions(): List<DynamicRouteConfigOptions>
+
+    fun publishEvent(message: String)
 }
