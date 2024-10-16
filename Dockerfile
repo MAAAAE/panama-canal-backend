@@ -19,15 +19,20 @@ RUN ./gradlew bootJar --no-daemon
 
 FROM openjdk:17-jdk-slim
 
+# Install Nginx
+RUN apt-get update && apt-get install -y nginx && rm -rf /var/lib/apt/lists/*
+
 # Set the working directory in the container
 WORKDIR /app
 
 # Copy the JAR file from the build stage
 COPY --from=build /app/build/libs/*.jar app.jar
 
+# Copy Nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
 
-# Expose the application port
-EXPOSE ${PORT}
+# Expose ports (Spring Boot and Nginx)
+EXPOSE 8080 80
 
-# Run the Spring Boot application
-ENTRYPOINT ["java","-jar","/app/app.jar"]
+# Start Nginx and Spring Boot
+CMD ["sh", "-c", "nginx && java -jar /app/app.jar"]
