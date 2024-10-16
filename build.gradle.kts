@@ -25,21 +25,38 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.hibernate.orm:hibernate-community-dialects")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-	implementation("org.springframework.cloud:spring-cloud-starter-gateway")
 	implementation("io.netty:netty-resolver-dns-native-macos")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	implementation("org.xerial:sqlite-jdbc:3.41.2.2")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
+
+
+	testImplementation("org.springframework.boot:spring-boot-starter-test") {
+		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+	}
+
+	// Kotest
+	testImplementation("io.kotest:kotest-runner-junit5:5.8.0")
+	testImplementation("io.kotest:kotest-assertions-core:5.8.0")
+	testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.3")
+	testImplementation("io.kotest:kotest-framework-engine:5.8.0")
+
+	testImplementation("org.jeasy:easy-random-core:5.0.0")
+
+	// Mockk
+	testImplementation("io.mockk:mockk:1.12.0")
+
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testImplementation("org.springframework.security:spring-security-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-	implementation("org.xerial:sqlite-jdbc:3.41.2.2") // SQLite JDBC 드라이버 추가
-
 }
 
 dependencyManagement {

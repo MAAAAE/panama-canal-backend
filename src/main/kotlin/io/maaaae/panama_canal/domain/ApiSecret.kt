@@ -1,14 +1,17 @@
 package io.maaaae.panama_canal.domain
 
+import io.maaaae.panama_canal.domain.api_info.ApiInfo
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
+@Table(name = "api_secret")
 data class ApiSecret(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val secretId: Long = 0,
-    @ManyToOne @JoinColumn(name = "api_id")
-    val api: ApiInfo,
+    @ManyToOne @JoinColumn(name = "category_id")
+    val category: Category,
+    @Column(nullable = false)
     val secretKey: String,
     val description: String,
     val createdAt: LocalDateTime = LocalDateTime.now(),
