@@ -17,6 +17,13 @@ fun FilterConfigRequest.toCreateEntity(dynamicRouteConfig: DynamicRouteConfig) =
     dynamicRouteConfig = dynamicRouteConfig
 )
 
+fun FilterConfigUpdateRequest.toCreateEntity(dynamicRouteConfig: DynamicRouteConfig) = FilterConfig(
+    filterName = this.filterName,
+    param = this.param,
+    value = this.value,
+    dynamicRouteConfig = dynamicRouteConfig,
+)
+
 fun FilterConfig.setRoute(dynamicRouteConfig: DynamicRouteConfig) {
 
 }
