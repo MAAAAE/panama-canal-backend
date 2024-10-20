@@ -7,4 +7,5 @@ data class DynamicRouteConfigUpdateRequest(
     val predicate: String? = null,
     val filters: List<FilterConfigUpdateRequest>? = null,
     val routeOrder: Int? = null,
+    val deletedFilters: List<FilterConfigUpdateRequest>? = null,
 )
